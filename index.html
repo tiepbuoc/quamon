@@ -678,7 +678,7 @@
     const base64Data = layoutImageBase64.split(',')[1];
     
     // Prompt yêu cầu Gemini mô tả chi tiết sơ đồ để Grok có thể tạo ảnh
-    const prompt = `You are an expert lighting designer. Please analyze this lighting layout diagram and provide a DETAILED description that an AI image generator (Grok Imagine) can use to create a photorealistic 3D rendering. PLEASE NOTE: SPECIFY CLEARLY THAT THE LIGHTS ARE ONLY TO BE INSTALLED ON THE CEILING.
+    const prompt = `You are an expert lighting designer. Please analyze this lighting layout diagram and provide a DETAILED description that an AI image generator (Grok Imagine) can use to create a photorealistic 3D rendering. PLEASE NOTE: IN YOUR ANSWER, SPECIFY THAT THE LIGHTS MUST BE INSTALLED ON THE CEILING. ALSO SPECIFY THE NUMBER OF LIGHTS, THE NUMBER OF ROWS, AND THE NUMBER OF COLUMNS THEY ARE ARRANGED IN.
 
 The diagram shows:
 - Room dimensions: ${roomL.toFixed(1)}m long × ${roomW.toFixed(1)}m wide
