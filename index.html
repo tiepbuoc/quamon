@@ -1,587 +1,1041 @@
-
 <!DOCTYPE html>
-<!-- saved from url=(0091)file:///C:/Users/ADMIN/AndroidStudioProjects/LightingOffline/app/src/main/assets/index.html -->
-<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiết kế chiếu sáng phòng (Offline)</title>
-    <style>
-        :root{
-          --bg1:#f5f7ff;
-          --bg2:#f6fff8;
-          --card:#ffffff;
-          --text:#121212;
-          --muted:#5e6472;
-          --primary:#0b6efd;
-          --primary2:#2b8cff;
-          --success:#16a34a;
-          --success2:#22c55e;
-          --line:#e6e8ef;
-          --shadow: 0 10px 30px rgba(20, 30, 60, 0.10);
-        }
-        *{box-sizing:border-box}
-        body{
-          margin:0;
-          font-family:"Times New Roman", Times, serif;
-          background: radial-gradient(1200px 600px at 10% 10%, var(--bg1), transparent 70%),
-                      radial-gradient(1200px 600px at 90% 20%, var(--bg2), transparent 70%),
-                      #f7f7fb;
-          color:var(--text);
-        }
-        .wrap{
-          max-width:560px;
-          margin:0 auto;
-          padding:18px;
-          min-height:100vh;
-        }
-        .menu,.screen{display:none}
-        h1,h2{margin:8px 0 12px}
-        h1{font-size:34px; letter-spacing:0.2px}
-        h2{font-size:28px; letter-spacing:0.1px}
-        .card{
-          background:var(--card);
-          border:1px solid var(--line);
-          border-radius:16px;
-          padding:16px;
-          box-shadow: var(--shadow);
-        }
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>LightWise — Thiết kế chiếu sáng thông minh</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        /* MENU CENTER */
-        #menu{
-          min-height: calc(100vh - 36px);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-        }
+  :root {
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --card-bg2: #fafafa;
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --primary-glow: rgba(16, 185, 129, 0.15);
+    --primary-pale: rgba(16, 185, 129, 0.05);
+    --secondary: #3b82f6;
+    --accent: #8b5cf6;
+    --border: #eef2f6;
+    --border-dark: #e2e8f0;
+    --text-light: #1e293b;
+    --text-mid: #475569;
+    --text-dim: #94a3b8;
+  }
 
-        .hero{
-          border-radius:14px;
-          padding:14px 14px;
-          background: linear-gradient(135deg, rgba(11,110,253,0.12), rgba(34,197,94,0.10));
-          border:1px solid rgba(11,110,253,0.12);
-          margin-bottom:12px;
-        }
-        .hero .sub{
-          color:var(--muted);
-          font-size:14px;
-          line-height:1.35;
-          margin-top:6px;
-        }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(145deg, #f9fafc 0%, #ffffff 100%);
+    color: var(--text-light);
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
 
-        .btn{
-          width:100%;
-          padding:13px 14px;
-          font-size:17px;
-          border:none;
-          border-radius:12px;
-          cursor:pointer;
-          color:#fff;
-          margin:10px 0 0;
-          font-family:"Times New Roman", Times, serif;
-          box-shadow: 0 8px 18px rgba(11,110,253,0.18);
-          background: linear-gradient(135deg, var(--primary), var(--primary2));
-          transition: transform .05s ease, filter .15s ease;
-        }
-        .btn:hover{filter:brightness(0.98)}
-        .btn:active{transform: translateY(1px)}
-        .btn.back{
-          box-shadow: 0 8px 18px rgba(34,197,94,0.16);
-          background: linear-gradient(135deg, var(--success), var(--success2));
-        }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        label{display:block;margin:12px 0 6px;font-weight:700}
-        input,select{
-          width:100%;
-          padding:11px 12px;
-          font-size:16px;
-          border:1px solid var(--line);
-          border-radius:12px;
-          outline:none;
-          background:#fff;
-          font-family:"Times New Roman", Times, serif;
-        }
-        .muted{
-          color:var(--muted);
-          font-size:13.5px;
-          line-height:1.4;
-        }
-        .divider{height:1px;background:var(--line);margin:14px 0}
-        .canvasWrap{
-          background:#fff;
-          border:1px solid var(--line);
-          border-radius:16px;
-          padding:10px;
-        }
-        canvas{
-          width:100%;
-          height:auto;
-          display:block;
-          border-radius:14px;
-          background:#fbfbff;
-        }
-        .result{
-          margin-top:12px;
-          padding:12px 14px;
-          background:#fff;
-          border:1px solid var(--line);
-          border-radius:16px;
-          font-size:16px;
-          line-height:1.35;
-        }
-        .kv{margin-top:6px;font-size:14.5px;color:#222}
-        .kv b{font-weight:800}
-        .err{color:#b00020;font-weight:800}
-        .ok{color:#0a7a2f;font-weight:800}
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    height: 70px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
 
-        .screen .card{margin: 10px auto 24px}
-    </style>
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    box-shadow: 0 0 20px var(--primary-glow);
+  }
+  .logo-type {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: -0.5px;
+  }
+  .logo-type span { color: var(--primary); font-weight: 800; }
+
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color .2s;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .nav-link:hover { color: var(--primary); }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 5%; height: 64px; }
+    .nav-link { font-size: 13px; }
+  }
+
+  .hero-mini {
+    background: linear-gradient(120deg, #ffffff 0%, #f8fafc 100%);
+    padding: 100px 6% 48px 6%;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--primary-pale), rgba(16,185,129,0.1));
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 36px;
+    color: var(--primary);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+  }
+  .hero-mini h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(38px, 6vw, 58px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+  .hero-mini h1 span { color: var(--primary); }
+  .hero-tags {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .hero-tag {
+    background: var(--primary-pale);
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-dark);
+    border: 1px solid rgba(16,185,129,0.2);
+  }
+  .hero-mini .desc {
+    font-size: 16px;
+    color: var(--text-mid);
+    max-width: 620px;
+    margin: 16px auto 0;
+  }
+
+  .main-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 6% 80px;
+  }
+
+  .glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 32px;
+    padding: 32px 28px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.02);
+    transition: all 0.2s;
+  }
+
+  .form-grid { display: flex; flex-direction: column; gap: 20px; }
+  label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    display: block;
+  }
+  input, select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    background: white;
+    font-family: 'Inter', sans-serif;
+    transition: 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.25s;
+    box-shadow: 0 4px 12px var(--primary-glow);
+    width: 100%;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--primary-glow);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-dark);
+    padding: 12px 20px;
+    border-radius: 40px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-pale);
+  }
+
+  .info-badge {
+    background: var(--primary-pale);
+    padding: 12px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    color: var(--text-mid);
+    border-left: 3px solid var(--primary);
+  }
+
+  .canvas-box {
+    background: #ffffff;
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  }
+  canvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    background: #fbfdff;
+  }
+
+  .result-stats {
+    background: #f9fafb;
+    border-radius: 28px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  .ai-image-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 24px;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  }
+  .ai-image-card h4 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--text-light);
+  }
+  .ai-image-caption {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .stat-row:last-child { border: none; }
+  .stat-label { font-weight: 500; color: var(--text-mid); }
+  .stat-value { font-weight: 700; color: var(--text-light); }
+  .badge-success {
+    background: var(--primary-pale);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .flex-btns {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 780px) {
+    .main-container { padding: 24px 5% 60px; }
+  }
+  @media (max-width: 600px) {
+    .hero-mini { padding-top: 110px; }
+    .flex-btns { flex-direction: column; }
+  }
+
+  .rise {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .rise.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .phase-badge {
+    display: inline-block;
+    background: var(--primary-pale);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-left: 8px;
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
 
-    <!-- MENU -->
-    <div class="menu" id="menu" style="display: flex;">
-        <div class="card" style="width:100%; max-width:520px;">
-            <div class="hero">
-                <h1 style="margin:0;">Menu</h1>
-                <div class="sub">Chạy offline. Vẽ minh hoạ bằng canvas.</div>
-            </div>
+<nav>
+  <div class="logo" id="logoReload">
+    <div class="logo-mark"><i class="fas fa-lightbulb"></i></div>
+    <div class="logo-type">Light<span>Wise</span></div>
+  </div>
+  <div class="nav-right">
+    <button class="nav-link" id="navInfo"><i class="fas fa-info-circle"></i> Thông tin đèn</button>
+    <button class="nav-link" id="navNote"><i class="fas fa-pen"></i> Ghi chú</button>
+  </div>
+</nav>
 
-            <button class="btn" onclick="goTo(&#39;calc&#39;)">Tính toán</button>
-            <button class="btn" onclick="goTo(&#39;info&#39;)">Thông tin</button>
-            <button class="btn" onclick="goTo(&#39;note&#39;)">Ghi chú</button>
+<section class="hero-mini">
+  <div class="hero-icon"><i class="fas fa-chalkboard"></i></div>
+  <h1>Light<span>Wise</span> Designer</h1>
+  <div class="hero-tags">
+    <span class="hero-tag"><i class="fas fa-school"></i> Phòng học</span>
+    <span class="hero-tag"><i class="fas fa-building"></i> Văn phòng</span>
+    <span class="hero-tag"><i class="fas fa-home"></i> Gia đình</span>
+  </div>
+  <div class="desc">
+    <i class="fas fa-microchip"></i> Bố trí đèn LED tối ưu · Minh họa trực quan · Đạt chuẩn 300 lux
+  </div>
+</section>
 
-            <div class="divider"></div>
-            <div class="muted">
-                Điều kiện vẽ: khoảng cách giữa đèn ≥ <b>0,3m</b>, cách tường ≥ <b>0,2m</b>.<br>
-                Số lượng đèn chỉ có thể là: <b>1, 2, 4, 6, 9, 12, 14, 20</b>.<br>
-                Giới hạn chiều cao: <b>2 → 10m</b>.
-            </div>
-        </div>
+<div class="main-container" id="appContainer">
+  <!-- MENU CHÍNH -->
+  <div id="menuView" style="display: block;">
+    <div class="glass-card rise" style="text-align: center; max-width: 620px; margin: 0 auto;">
+      <div class="logo-mark" style="margin: 0 auto 20px; width: 64px; height: 64px; font-size: 28px;"><i class="fas fa-chalkboard-user"></i></div>
+      <h2 style="margin-bottom: 8px; font-family: 'Space Grotesk';">Công cụ thiết kế chiếu sáng</h2>
+      <div class="info-badge" style="margin: 20px 0;">
+        <i class="fas fa-ruler-combined"></i> Tự động tính số lượng & bố trí đèn tuýp 1.2m
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 24px;">
+        <button class="btn-primary" id="gotoCalcBtn"><i class="fas fa-calculator"></i> Tính toán & Bố trí đèn</button>
+        <button class="btn-outline" id="gotoInfoBtn"><i class="fas fa-lightbulb"></i> Thông tin từng loại đèn</button>
+        <button class="btn-outline" id="gotoNoteBtn"><i class="fas fa-sticky-note"></i> Ghi chú kỹ thuật</button>
+      </div>
+      <div class="info-badge" style="margin-top: 28px; font-size: 12px;">
+        <i class="fas fa-chart-line"></i> Điều kiện: khoảng cách đèn ≥0.3m, cách tường ≥0.2m | Số đèn khả dụng: 1,2,4,6,9,12,14,20
+      </div>
     </div>
+  </div>
 
-    <!-- CALC -->
-    <div class="screen" id="calc" style="display: none;">
-        <div class="card">
-            <h2>Tính toán</h2>
-
-            <label for="lightType">Chọn loại đèn</label>
-            <select id="lightType">
-                <option value="1">Bóng LED Tuýp DE HO 1.2m 22W T8 Philips</option>
-                <option value="2">Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W</option>
-                <option value="3">Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips</option>
-            </select>
-
-            <label for="h">Chiều cao (m)</label>
-            <input id="h" type="number" step="0.01" placeholder="Ví dụ: 2.8">
-
-            <label for="l">Chiều dài (m)</label>
-            <input id="l" type="number" step="0.01" placeholder="Ví dụ: 6">
-
-            <label for="w">Chiều rộng (m)</label>
-            <input id="w" type="number" step="0.01" placeholder="Ví dụ: 4.5">
-
-            <button class="btn" onclick="startCalc()">Bắt đầu</button>
-
-            <div class="divider"></div>
-            <div class="muted">
-                Độ rọi mục tiêu: <b>300 lux</b>. (Ước tính theo quang thông, hệ số sử dụng và suy giảm.)
-            </div>
-
-            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
+  <!-- VIEW TÍNH TOÁN -->
+  <div id="calcView" style="display: none;">
+    <div class="glass-card rise">
+      <h3 style="font-size: 26px; margin-bottom: 8px;"><i class="fas fa-microchip"></i> Thông số không gian</h3>
+      <div class="form-grid">
+        <div>
+          <label><i class="fas fa-tag"></i> Loại đèn LED</label>
+          <select id="lightType">
+            <option value="1">Bóng LED Tuýp DE HO 1.2m 22W T8 Philips</option>
+            <option value="2">Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W</option>
+            <option value="3">Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips</option>
+          </select>
         </div>
+        <div>
+          <label><i class="fas fa-arrow-up"></i> Chiều cao phòng (m) 2–10m</label>
+          <input type="number" id="h" step="0.01" placeholder="Ví dụ: 2.8">
+        </div>
+        <div>
+          <label><i class="fas fa-arrow-right"></i> Chiều dài (m)</label>
+          <input type="number" id="l" step="0.01" placeholder="Ví dụ: 6.0">
+        </div>
+        <div>
+          <label><i class="fas fa-arrow-left"></i> Chiều rộng (m)</label>
+          <input type="number" id="w" step="0.01" placeholder="Ví dụ: 4.5">
+        </div>
+        <button class="btn-primary" id="startCalcBtn"><i class="fas fa-chart-simple"></i> Thiết kế & Minh họa</button>
+        <button class="btn-outline" id="backToMenuFromCalc"><i class="fas fa-arrow-left"></i> Quay lại menu</button>
+      </div>
     </div>
+  </div>
 
-    <!-- RESULT -->
-    <div class="screen" id="result" style="display: none;">
-        <div class="card">
-            <h2>Minh hoạ Bố trí Đèn</h2>
-
-            <div class="canvasWrap">
-                <canvas id="cvs" width="500" height="510" style="width: 500px; height: 510px;"></canvas>
-            </div>
-
-            <div class="result" id="resultText">
-        <div><span class="ok">Số lượng đèn cần thiết:</span> <b>4</b></div>
-        <div class="kv"><b>Đèn:</b> Bóng LED Tuýp DE HO 1.2m 22W T8 Philips</div>
-        <div class="kv"><b>Độ rọi mục tiêu:</b> 300 lux</div>
-        <div class="kv"><b>Ước tính độ rọi đạt:</b> 307 lux</div>
-        <div class="kv"><b>Khoảng cách ngang m (giữa đèn):</b> 0.48 m</div>
-        <div class="kv"><b>Khoảng cách dọc n (giữa đèn):</b> 0.60 m</div>
-        <div class="kv"><b>Cách tường:</b> ≥ 0.2 m | <b>Cách nhau:</b> ≥ 0.3 m</div>
+  <!-- VIEW KẾT QUẢ -->
+  <div id="resultView" style="display: none;">
+    <div class="glass-card">
+      <h3><i class="fas fa-draw-polygon"></i> Sơ đồ bố trí đèn</h3>
+      <div class="canvas-box">
+        <canvas id="cvs" width="550" height="550" style="width:100%; height:auto; max-width:550px; margin:0 auto; display:block;"></canvas>
+      </div>
+      <div class="result-stats" id="resultText"></div>
+      
+      <!-- Phần AI: Gemini đọc ảnh sơ đồ và tạo mô tả -->
+      <div id="geminiSection" class="ai-image-card" style="display:none;">
+        <h4><i class="fas fa-eye"></i> Bước 1: Gemini phân tích sơ đồ <span class="phase-badge">Đang chờ...</span></h4>
+        <div class="canvas-box" style="min-height: 100px;">
+          <div id="geminiLoading" style="display:none; color: var(--text-mid); font-size:14px;">📡 Gemini đang xem sơ đồ và mô tả không gian...</div>
+          <div id="geminiResult" style="display:none; font-size:13px; line-height:1.6; text-align:left; background:#f9fafb; padding:12px; border-radius:16px;"></div>
+          <div id="geminiError" style="display:none; color:#b91c1c; font-size:13px;"></div>
+        </div>
       </div>
 
-            <button class="btn back" style="margin-top:14px;" onclick="goTo(&#39;calc&#39;)">Trở lại tính toán</button>
+      <!-- Phần AI: Grok tạo ảnh từ mô tả của Gemini -->
+      <div id="grokSection" class="ai-image-card" style="display:none;">
+        <h4><i class="fas fa-camera"></i> Bước 2: Grok Imagine tạo ảnh <span class="phase-badge">Chờ phân tích xong</span></h4>
+        <div class="canvas-box" style="min-height: 260px; display: grid; place-items: center;">
+          <div id="grokLoading" style="display:none; color: var(--text-mid); font-size:14px;">🎨 Grok đang vẽ ảnh từ mô tả của Gemini...</div>
+          <img id="grokImageResult" src="" alt="Ảnh AI" style="max-width:100%; height:auto; border-radius:20px; display:none;" />
+          <div id="grokError" style="display:none; color:#b91c1c; font-size:13px; margin-top: 12px; text-align:center;"></div>
         </div>
-    </div>
-
-    <!-- INFO -->
-    <div class="screen" id="info" style="display: none;">
-        <div class="card">
-            <h2>Thông tin</h2>
-
-            <button class="btn" onclick="showInfo(1)">1) LED Tuýp Philips 22W</button>
-            <button class="btn" onclick="showInfo(2)">2) LED Tuýp Rạng Đông 20W</button>
-            <button class="btn" onclick="showInfo(3)">3) LED Tuýp Philips 14.5W</button>
-
-            <div class="divider"></div>
-            <div id="infoBox" class="muted"><b>Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips</b><br><br>Công suất: ~14.5W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~1600lm<br><br>
-              Ưu điểm: Ánh sáng chất lượng từ thương hiệu Philips, ít nhấp nháy, bảo vệ mắt<br><br>
-              Ứng dụng: Góc học, phòng học nhỏ, phòng làm việc cá nhân</div>
-
-            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
+        <div class="ai-image-caption">
+          <strong>Quy trình AI 2 bước:</strong> Gemini đọc sơ đồ bố trí đèn → mô tả chi tiết → Grok Imagine tạo ảnh thực tế.
         </div>
+      </div>
+
+      <div class="flex-btns">
+        <button class="btn-outline" id="backToCalcFromResult"><i class="fas fa-calculator"></i> Sửa thông số</button>
+        <button class="btn-outline" id="backToMainFromResult"><i class="fas fa-home"></i> Menu chính</button>
+        <button class="btn-outline" id="retryAIBtn"><i class="fas fa-sync-alt"></i> Thử lại toàn bộ AI</button>
+      </div>
     </div>
+  </div>
 
-    <!-- NOTE -->
-    <div class="screen" id="note" style="display: none;">
-        <div class="card">
-            <h2>Ghi chú</h2>
-            <p style="margin:0;font-size:20px;">ạduiagh</p>
-
-            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
-        </div>
+  <!-- VIEW THÔNG TIN ĐÈN -->
+  <div id="infoView" style="display: none;">
+    <div class="glass-card">
+      <h3><i class="fas fa-info-circle"></i> Thông số kỹ thuật đèn LED</h3>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0;">
+        <button class="btn-outline info-lamp-btn" data-idx="0">🏮 Philips 22W</button>
+        <button class="btn-outline info-lamp-btn" data-idx="1">🏮 Rạng Đông 20W</button>
+        <button class="btn-outline info-lamp-btn" data-idx="2">🏮 Philips 14.5W</button>
+      </div>
+      <div id="infoDetailBox" class="info-badge" style="background: #f9fafb; line-height: 1.6;"></div>
+      <button class="btn-outline" id="backToMenuFromInfo" style="margin-top: 24px;"><i class="fas fa-arrow-left"></i> Trở về menu</button>
     </div>
+  </div>
 
+  <!-- VIEW GHI CHÚ -->
+  <div id="noteView" style="display: none;">
+    <div class="glass-card">
+      <h3><i class="fas fa-pen-fancy"></i> Ghi chú & Hướng dẫn</h3>
+      <div class="info-badge" style="margin-top: 20px; white-space: pre-line; font-size: 14px;">
+        <i class="fas fa-check-circle" style="color: var(--primary);"></i> <strong>Nguyên lý tính toán:</strong><br>
+        • Độ rọi mục tiêu: 300 lux (tiêu chuẩn phòng học/làm việc).<br>
+        • Công thức: N = (Diện tích × lux × Hệ số mất mát) / (Quang thông đèn × Hệ số sử dụng)<br>
+        • Hệ số sử dụng (UF) = 0.8, Hệ số mất mát (MF) = 1.2.<br>
+        • Số lượng đèn được làm tròn theo bộ số tối ưu: 1,2,4,6,9,12,14,20.<br>
+        • Bố trí dạng lưới, tự động cân đối khoảng cách, tối thiểu cách tường ≥0.2m và giữa các đèn ≥0.3m.<br><br>
+        <i class="fas fa-microchip"></i> <strong>Công nghệ AI 2 bước:</strong><br>
+        • <strong>Gemini 2.0 Flash (Google):</strong> Đọc ảnh sơ đồ bố trí đèn, phân tích vị trí, số lượng, khoảng cách.<br>
+        • <strong>Grok Imagine (xAI):</strong> Nhận mô tả chi tiết từ Gemini, tạo ảnh thực tế 3D.<br>
+        • Cả 2 đều dùng chung API key qua Apishop, mỗi model có cú pháp riêng: Gemini dùng inlineData với base64, Grok dùng prompt text.<br><br>
+        <i class="fas fa-lightbulb"></i> <strong>Lưu ý:</strong> Kết quả ước tính độ rọi có sai số do điều kiện thực tế (trần, tường, màu sơn). 
+      </div>
+      <button class="btn-outline" id="backToMenuFromNote" style="margin-top: 28px;"><i class="fas fa-arrow-left"></i> Quay lại menu</button>
+    </div>
+  </div>
 </div>
 
+<footer style="border-top: 1px solid var(--border); padding: 32px 6%; text-align: center; background: white; margin-top: 20px;">
+  <div style="font-size: 12px; color: var(--text-dim);"><i class="far fa-copyright"></i> 2026 LightWise — Thiết kế chiếu sáng thông minh | AI: Gemini + Grok</div>
+</footer>
+
 <script>
-    // ===== Navigation =====
-    function hideAll(){
-      document.querySelectorAll('.screen').forEach(s => s.style.display='none');
-      document.getElementById('menu').style.display='none';
-    }
-    function goTo(id){
-      hideAll();
-      document.getElementById(id).style.display='block';
-      if(id === 'result' && lastDraw){
-        drawLayout(lastDraw.layout, lastDraw.roomL, lastDraw.roomW);
-      }
-    }
-    function backToMenu(){
-      hideAll();
-      document.getElementById('menu').style.display='flex';
-    }
-    document.addEventListener('DOMContentLoaded', ()=> backToMenu());
+  // ---------- Dữ liệu đèn ----------
+  const LAMPS = [
+    { name:"Bóng LED Tuýp DE HO 1.2m 22W T8 Philips", powerW:22, lumen:2300, lengthM:1.2, widthM:0.1,
+      note:`Công suất: 22W<br>Chiều dài: 1.2m<br>Quang thông: ~2300lm<br>Ưu điểm: Giá tốt, hiệu suất cao, thay thế trực tiếp bóng huỳnh quang.` },
+    { name:"Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W", powerW:20, lumen:2400, lengthM:1.2, widthM:0.1,
+      note:`Công suất: 20W<br>Chiều dài: 1.2m<br>Quang thông: ~2400lm<br>Ưu điểm: Thương hiệu Rạng Đông, bền bỉ, ánh sáng ổn định.` },
+    { name:"Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips", powerW:14.5, lumen:1600, lengthM:1.2, widthM:0.1,
+      note:`Công suất: 14.5W<br>Chiều dài: 1.2m<br>Quang thông: ~1600lm<br>Ưu điểm: Chất lượng Philips, ít nhấp nháy, bảo vệ mắt.` }
+  ];
+  const TARGET_LUX = 300;
+  const UTIL = 0.8;
+  const MF = 1.2;
+  const MIN_GAP = 0.3;
+  const WALL_GAP = 0.2;
+  const ALLOWED_COUNTS = [1,2,4,6,9,12,14,20];
+  const LAMP_LEN = 1.2;
+  const LAMP_WID = 0.1;
+  
+  // Cấu hình API qua Apishop - dùng chung key cho cả Gemini và Grok
+  const API_KEY = 'sk-uQmI5tk7o5FdWLq852gCLO2xZTd5OmG2K9RKy7C3raEqGx6v';
+  
+  // Gemini API (Google format) - dùng để đọc ảnh sơ đồ
+  // Endpoint theo chuẩn Gemini API của Google [citation:1]
+  const GEMINI_API_URL = 'https://api-v2.shopaikey.com/v1beta/models/gemini-2.5-flash:generateContent';
+  
+  // Grok API (xAI format) - dùng để tạo ảnh từ mô tả [citation:2][citation:10]
+  const GROK_API_URL = 'https://api-v2.shopaikey.com/v1/images/generations';
+  const GROK_MODEL = 'grok-imagine-image';
 
-    // ===== Lamp info =====
-    const LAMPS = [
-      {
-        name:"Bóng LED Tuýp DE HO 1.2m 22W T8 Philips",
-        powerW:22,
-        lumen:2300,
-        lengthM:1.2,
-        note:`Công suất: ~22W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~2300lm<br><br>
-              Ưu điểm: Giá rẻ, hiệu quả tốt, dễ thay thế cho bóng huỳnh quang cũ<br><br>
-              Ứng dụng: Phòng học, phòng làm việc, không gian chung`
-      },
-      {
-        name:"Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W",
-        powerW:20,
-        lumen:2400,
-        lengthM:1.2,
-        note:`Công suất: ~20W<br><br>Chiều dài: 1.2m<br><br>Quang thông (Lumen): ~2400lm (tùy mode/loại có thể ~2200–2600lm)<br><br>
-              Ưu điểm: Thương hiệu Rạng Đông uy tín, ánh sáng ổn định và tuổi thọ cao<br><br>
-              Ứng dụng: Lớp học, phòng học tại nhà, khu vực sinh hoạt chung`
-      },
-      {
-        name:"Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips",
-        powerW:14.5,
-        lumen:1600,
-        lengthM:1.2,
-        note:`Công suất: ~14.5W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~1600lm<br><br>
-              Ưu điểm: Ánh sáng chất lượng từ thương hiệu Philips, ít nhấp nháy, bảo vệ mắt<br><br>
-              Ứng dụng: Góc học, phòng học nhỏ, phòng làm việc cá nhân`
-      }
-    ];
-    function showInfo(i){
-      const lamp = LAMPS[i-1];
-      document.getElementById('infoBox').innerHTML =
-        `<b>${lamp.name}</b><br><br>${lamp.note}`;
-    }
+  let lastLayout = null;
+  let lastRoom = { l:0, w:0 };
+  let lastLamp = null;
+  let isGeneratingAI = false;
+  let lastGeminiDescription = "";
 
-    // ===== Calculation + Drawing =====
-    const TARGET_LUX = 300;
-    const UTIL = 0.8;
-    const MF = 1.2;
+  // Navigation
+  function hideAllViews() {
+    document.getElementById('menuView').style.display = 'none';
+    document.getElementById('calcView').style.display = 'none';
+    document.getElementById('resultView').style.display = 'none';
+    document.getElementById('infoView').style.display = 'none';
+    document.getElementById('noteView').style.display = 'none';
+  }
+  function showMenu() { hideAllViews(); document.getElementById('menuView').style.display = 'block'; }
+  function showCalc() { hideAllViews(); document.getElementById('calcView').style.display = 'block'; }
+  function showResult() { hideAllViews(); document.getElementById('resultView').style.display = 'block'; }
+  function showInfo() { hideAllViews(); document.getElementById('infoView').style.display = 'block'; }
+  function showNote() { hideAllViews(); document.getElementById('noteView').style.display = 'block'; }
 
-    // Lamp size (m)
-    const LAMP_LEN = 1.2;
-    const LAMP_WID = 0.1;
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+  function targetMargin(dim){ return clamp(dim * 0.10, WALL_GAP, Math.max(WALL_GAP, dim * 0.22)); }
+  function targetGap(dim){ return clamp(dim * 0.12, MIN_GAP, 1.20); }
 
-    // Constraints (m)
-    const MIN_GAP = 0.3;   // between lamps
-    const WALL_GAP = 0.2;  // from walls
-
-    // Dynamic targets based on room size (for "đẹp và hợp lý")
-    const MARGIN_FRAC = 0.10; // aim ~10% margin if possible
-    const GAP_FRAC = 0.12;    // aim ~12% gap if possible
-    const GAP_CAP = 1.20;     // cap to avoid huge spacing
-
-    const ALLOWED_COUNTS = [1,2,4,6,9,12,14,20];
-
-    let lastDraw = null;
-
-    function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
-
-    function startCalc(){
-      const h = parseFloat(document.getElementById('h').value);
-      const L = parseFloat(document.getElementById('l').value);
-      const W = parseFloat(document.getElementById('w').value);
-      const lampIdx = parseInt(document.getElementById('lightType').value,10)-1;
-      const lamp = LAMPS[lampIdx];
-
-      if (!isFinite(h) || h < 2 || h > 10){
-        goTo('result');
-        document.getElementById('resultText').innerHTML = `<span class="err">lỗi chiều cao</span>`;
-        lastDraw = null;
-        clearCanvas();
-        return;
-      }
-
-      if (!isFinite(L) || !isFinite(W) || L <= 0 || W <= 0){
-        goTo('result');
-        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
-        lastDraw = null;
-        clearCanvas();
-        return;
-      }
-
-      const area = L * W;
-      if (area < 1){
-        goTo('result');
-        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
-        lastDraw = null;
-        clearCanvas();
-        return;
-      }
-
-      const requiredLumens = area * TARGET_LUX * MF / UTIL;
-      const raw = Math.ceil(requiredLumens / lamp.lumen);
-
-      if (raw > 20){
-        goTo('result');
-        document.getElementById('resultText').innerHTML = `<span class="err">Cần đổi qua đèn phù hợp hơn</span>`;
-        lastDraw = null;
-        clearCanvas();
-        return;
-      }
-
-      let N = ALLOWED_COUNTS.find(x => x >= raw);
-      if (!N) N = 20;
-
-      const layout = chooseExactGridLayout(N, L, W);
-      if (!layout){
-        goTo('result');
-        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
-        lastDraw = null;
-        clearCanvas();
-        return;
-      }
-
-      const achievedLux = (N * lamp.lumen * UTIL) / (MF * area);
-
-      lastDraw = { layout, roomL: L, roomW: W };
-      goTo('result');
-      drawLayout(layout, L, W);
-
-      const m = layout.spacingX;
-      const n = layout.spacingY;
-
-      document.getElementById('resultText').innerHTML = `
-        <div><span class="ok">Số lượng đèn cần thiết:</span> <b>${N}</b></div>
-        <div class="kv"><b>Đèn:</b> ${lamp.name}</div>
-        <div class="kv"><b>Độ rọi mục tiêu:</b> ${TARGET_LUX} lux</div>
-        <div class="kv"><b>Ước tính độ rọi đạt:</b> ${achievedLux.toFixed(0)} lux</div>
-        <div class="kv"><b>Khoảng cách ngang m (giữa đèn):</b> ${m.toFixed(2)} m</div>
-        <div class="kv"><b>Khoảng cách dọc n (giữa đèn):</b> ${n.toFixed(2)} m</div>
-        <div class="kv"><b>Cách tường:</b> ≥ ${WALL_GAP.toFixed(1)} m | <b>Cách nhau:</b> ≥ ${MIN_GAP.toFixed(1)} m</div>
-      `;
-    }
-
-    function chooseExactGridLayout(N, roomL, roomW){
-      const pairs = [];
-      for (let r=1; r<=N; r++){
-        if (N % r === 0) pairs.push([r, N/r]);
-      }
-
-      let best = null;
-      for (const [rows, cols] of pairs){
-        const cand = evaluateGrid(rows, cols, roomL, roomW);
-        if (!cand) continue;
-
-        // scoring: prefer square-ish + aligned with room aspect + close to target gaps
-        const aspect = roomL / roomW;
-        const gridAspect = cols / rows;
-        const squareness = Math.abs(rows - cols);
-        const aspectPenalty = Math.abs(gridAspect - aspect);
-
-        const tgx = targetGap(roomL), tgy = targetGap(roomW);
-        const gapPenalty = Math.abs(cand.spacingX - tgx) + Math.abs(cand.spacingY - tgy);
-
-        const score = squareness * 3 + aspectPenalty * 2 + gapPenalty * 1.2;
-
-        if (!best || score < best.score){
-          best = {...cand, rows, cols, score};
-        }
-      }
-      return best;
-    }
-
-    function targetMargin(dim){
-      return clamp(dim * MARGIN_FRAC, WALL_GAP, Math.max(WALL_GAP, dim * 0.22));
-    }
-    function targetGap(dim){
-      return clamp(dim * GAP_FRAC, MIN_GAP, GAP_CAP);
-    }
-
-    function evaluateGrid(rows, cols, roomL, roomW){
-      // Target margins
-      let marginX = targetMargin(roomL);
-      let marginY = targetMargin(roomW);
-
-      let spacingX = 0, spacingY = 0;
-
-      // ----- X direction (length) -----
-      if (cols > 1){
-        spacingX = (roomL - 2*marginX - cols*LAMP_LEN) / (cols - 1);
-
-        // If too small: lock spacing at MIN_GAP and reduce margins equally
-        if (spacingX < MIN_GAP){
-          spacingX = MIN_GAP;
-          marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
-        } else {
-          // If too large: bring it toward targetGap and increase margins (center) for nicer look
-          const maxX = (roomL - 2*WALL_GAP - cols*LAMP_LEN) / (cols - 1);
-          if (maxX < MIN_GAP - 1e-9) return null;
-
-          const desiredX = clamp(targetGap(roomL), MIN_GAP, maxX);
-          spacingX = Math.min(spacingX, desiredX);
-          marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
-        }
+  function evaluateGrid(rows, cols, roomL, roomW){
+    let marginX = targetMargin(roomL);
+    let marginY = targetMargin(roomW);
+    let spacingX = 0, spacingY = 0;
+    if(cols > 1){
+      spacingX = (roomL - 2*marginX - cols*LAMP_LEN) / (cols - 1);
+      if(spacingX < MIN_GAP){
+        spacingX = MIN_GAP;
+        marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
       } else {
-        marginX = (roomL - LAMP_LEN) / 2;
-        spacingX = 0;
+        const maxX = (roomL - 2*WALL_GAP - cols*LAMP_LEN) / (cols - 1);
+        if(maxX < MIN_GAP - 1e-9) return null;
+        const desiredX = clamp(targetGap(roomL), MIN_GAP, maxX);
+        spacingX = Math.min(spacingX, desiredX);
+        marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
       }
+    } else marginX = (roomL - LAMP_LEN) / 2;
 
-      // ----- Y direction (width) -----
-      if (rows > 1){
-        spacingY = (roomW - 2*marginY - rows*LAMP_WID) / (rows - 1);
-
-        if (spacingY < MIN_GAP){
-          spacingY = MIN_GAP;
-          marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
-        } else {
-          const maxY = (roomW - 2*WALL_GAP - rows*LAMP_WID) / (rows - 1);
-          if (maxY < MIN_GAP - 1e-9) return null;
-
-          const desiredY = clamp(targetGap(roomW), MIN_GAP, maxY);
-          spacingY = Math.min(spacingY, desiredY);
-          marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
-        }
+    if(rows > 1){
+      spacingY = (roomW - 2*marginY - rows*LAMP_WID) / (rows - 1);
+      if(spacingY < MIN_GAP){
+        spacingY = MIN_GAP;
+        marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
       } else {
-        marginY = (roomW - LAMP_WID) / 2;
-        spacingY = 0;
+        const maxY = (roomW - 2*WALL_GAP - rows*LAMP_WID) / (rows - 1);
+        if(maxY < MIN_GAP - 1e-9) return null;
+        const desiredY = clamp(targetGap(roomW), MIN_GAP, maxY);
+        spacingY = Math.min(spacingY, desiredY);
+        marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
       }
+    } else marginY = (roomW - LAMP_WID) / 2;
 
-      // Respect wall gap
-      if (marginX < WALL_GAP - 1e-9) return null;
-      if (marginY < WALL_GAP - 1e-9) return null;
+    if(marginX < WALL_GAP - 1e-9 || marginY < WALL_GAP - 1e-9) return null;
+    const lamps = [];
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        lamps.push({ x: marginX + c*(LAMP_LEN + spacingX), y: marginY + r*(LAMP_WID + spacingY) });
+      }
+    }
+    const maxX = marginX + (cols-1)*(LAMP_LEN+spacingX)+LAMP_LEN;
+    const maxY = marginY + (rows-1)*(LAMP_WID+spacingY)+LAMP_WID;
+    if(maxX > roomL + 1e-9 || maxY > roomW + 1e-9) return null;
+    return { spacingX, spacingY, startX: marginX, startY: marginY, lamps, rows, cols };
+  }
 
-      // Build lamps
-      const lamps = [];
-      for (let r=0;r<rows;r++){
-        for (let c=0;c<cols;c++){
-          lamps.push({
-            x: marginX + c*(LAMP_LEN + spacingX),
-            y: marginY + r*(LAMP_WID + spacingY)
-          });
+  function chooseExactGridLayout(N, roomL, roomW){
+    const pairs = [];
+    for(let r=1;r<=N;r++) if(N%r===0) pairs.push([r, N/r]);
+    let best = null;
+    for(let [rows, cols] of pairs){
+      const cand = evaluateGrid(rows, cols, roomL, roomW);
+      if(!cand) continue;
+      const aspect = roomL/roomW;
+      const gridAspect = cols/rows;
+      const squareness = Math.abs(rows-cols);
+      const aspectPenalty = Math.abs(gridAspect - aspect);
+      const tgx = targetGap(roomL), tgy = targetGap(roomW);
+      const gapPenalty = Math.abs(cand.spacingX - tgx) + Math.abs(cand.spacingY - tgy);
+      const score = squareness*3 + aspectPenalty*2 + gapPenalty*1.2;
+      if(!best || score < best.score) best = {...cand, rows, cols, score};
+    }
+    return best;
+  }
+
+  // Hàm vẽ sơ đồ lên canvas và trả về base64 để gửi cho Gemini [citation:1]
+  function getLayoutImageAsBase64(layout, roomL, roomW, callback) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 800;
+    const ctx = canvas.getContext('2d');
+    
+    const pad = 40;
+    const s = Math.min((800 - 2*pad)/roomL, (800 - 2*pad)/roomW);
+    const ox = (800 - roomL*s)/2;
+    const oy = (800 - roomW*s)/2;
+    
+    // Vẽ nền phòng
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillRect(ox, oy, roomL*s, roomW*s);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(ox, oy, roomL*s, roomW*s);
+    
+    // Vẽ từng đèn
+    for(let p of layout.lamps){
+      let x = ox + p.x*s;
+      let y = oy + p.y*s;
+      ctx.fillStyle = '#ffcc00';
+      ctx.fillRect(x, y, LAMP_LEN*s, LAMP_WID*s);
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, LAMP_LEN*s, LAMP_WID*s);
+    }
+    
+    // Vẽ chú thích kích thước nếu cần
+    ctx.fillStyle = '#666';
+    ctx.font = '14px Inter';
+    ctx.fillText(`${roomL.toFixed(1)}m`, ox + roomL*s/2 - 20, oy + roomW*s + 20);
+    ctx.fillText(`${roomW.toFixed(1)}m`, ox - 30, oy + roomW*s/2);
+    
+    callback(canvas.toDataURL('image/png'));
+  }
+
+  // Bước 1: Gửi ảnh sơ đồ cho Gemini để phân tích [citation:1][citation:3]
+  async function analyzeWithGemini(layoutImageBase64, roomL, roomW, lamp, layout) {
+    const geminiSection = document.getElementById('geminiSection');
+    const geminiLoading = document.getElementById('geminiLoading');
+    const geminiResult = document.getElementById('geminiResult');
+    const geminiError = document.getElementById('geminiError');
+    const geminiBadge = geminiSection.querySelector('.phase-badge');
+    
+    geminiSection.style.display = 'block';
+    geminiLoading.style.display = 'block';
+    geminiResult.style.display = 'none';
+    geminiError.style.display = 'none';
+    geminiBadge.textContent = 'Gemini đang phân tích...';
+    geminiBadge.style.background = '#fef3c7';
+    geminiBadge.style.color = '#d97706';
+    
+    // Xóa phần base64 header "data:image/png;base64," để lấy pure base64
+    const base64Data = layoutImageBase64.split(',')[1];
+    
+    // Prompt yêu cầu Gemini mô tả chi tiết sơ đồ để Grok có thể tạo ảnh
+    const prompt = `You are an expert lighting designer. Please analyze this lighting layout diagram and provide a DETAILED description that an AI image generator (Grok Imagine) can use to create a photorealistic 3D rendering. PLEASE NOTE: SPECIFY THAT THE LIGHTS ARE INSTALLED ON THE CEILING..
+
+The diagram shows:
+- Room dimensions: ${roomL.toFixed(1)}m long × ${roomW.toFixed(1)}m wide
+- ${layout.rows * layout.cols} LED tube lights arranged in ${layout.rows} rows × ${layout.cols} columns grid
+- LED tube length: 1.2m each
+- Horizontal spacing between lamps: ${layout.spacingX.toFixed(2)}m
+- Vertical spacing between lamps: ${layout.spacingY.toFixed(2)}m
+- Distance from side walls: approximately ${((roomL - (layout.cols * 1.2 + (layout.cols-1)*layout.spacingX))/2).toFixed(2)}m
+- Lamp model: ${lamp.name}
+
+**Required output format** (write as a single paragraph, ready to use as prompt for image generation):
+Start with "Photorealistic architectural rendering of a ..." then describe:
+1. Room type and dimensions
+2. Ceiling with LED tube lights in EXACT grid pattern (specify rows x columns)
+3. Lighting effect: even illumination, no dark spots, warm white light
+4. Materials: white ceiling, light walls, floor material
+5. Camera angle: eye-level perspective from corner or center
+
+Be very specific about the grid layout. The image generator MUST understand exactly how many lights and their arrangement.`;
+
+    // Format request theo chuẩn Gemini API [citation:1][citation:5]
+    const payload = {
+      contents: [{
+        parts: [
+          {
+            inline_data: {
+              mime_type: "image/png",
+              data: base64Data
+            }
+          },
+          { text: prompt }
+        ]
+      }]
+    };
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      
+      const response = await fetch(`${GEMINI_API_URL}?key=${API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error?.message || data.error || 'Gemini API error');
+      }
+      
+      const description = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!description) throw new Error('No description from Gemini');
+      
+      geminiLoading.style.display = 'none';
+      geminiResult.style.display = 'block';
+      geminiResult.innerHTML = `<i class="fas fa-check-circle" style="color:var(--primary);"></i> <strong>Gemini đã phân tích:</strong><br><br>${description.replace(/\n/g, '<br>')}`;
+      geminiBadge.textContent = '✓ Phân tích hoàn tất';
+      geminiBadge.style.background = '#d1fae5';
+      geminiBadge.style.color = '#065f46';
+      
+      return description;
+      
+    } catch (err) {
+      geminiLoading.style.display = 'none';
+      geminiError.style.display = 'block';
+      geminiError.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Lỗi Gemini: ${err.message}`;
+      geminiBadge.textContent = '❌ Phân tích thất bại';
+      geminiBadge.style.background = '#fee2e2';
+      geminiBadge.style.color = '#991b1b';
+      throw err;
+    }
+  }
+
+  // Bước 2: Gửi mô tả cho Grok Imagine để tạo ảnh [citation:2][citation:10]
+  async function generateWithGrok(description) {
+    const grokSection = document.getElementById('grokSection');
+    const grokLoading = document.getElementById('grokLoading');
+    const grokImage = document.getElementById('grokImageResult');
+    const grokError = document.getElementById('grokError');
+    const grokBadge = grokSection.querySelector('.phase-badge');
+    
+    grokSection.style.display = 'block';
+    grokLoading.style.display = 'block';
+    grokImage.style.display = 'none';
+    grokError.style.display = 'none';
+    grokBadge.textContent = 'Grok đang tạo ảnh...';
+    grokBadge.style.background = '#fef3c7';
+    grokBadge.style.color = '#d97706';
+    
+    // Format request theo chuẩn xAI Grok API [citation:2][citation:10]
+    const payload = {
+      model: GROK_MODEL,
+      prompt: description,
+      n: 1,
+      response_format: "url"
+    };
+    
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
+      
+      const response = await fetch(GROK_API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      const data = await response.json();
+      
+      if (!response.ok) {
+        const errorMsg = data.error?.message || data.error || 'Grok API error';
+        throw new Error(errorMsg);
+      }
+      
+      const imageUrl = data.data?.[0]?.url;
+      if (!imageUrl) throw new Error('No image URL in response');
+      
+      grokImage.src = imageUrl;
+      grokImage.onload = () => {
+        grokLoading.style.display = 'none';
+        grokImage.style.display = 'block';
+        grokBadge.textContent = '✓ Ảnh đã tạo xong';
+        grokBadge.style.background = '#d1fae5';
+        grokBadge.style.color = '#065f46';
+      };
+      grokImage.onerror = () => {
+        grokLoading.style.display = 'none';
+        grokError.style.display = 'block';
+        grokError.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Không thể tải ảnh từ Grok';
+        grokBadge.textContent = '❌ Tải ảnh thất bại';
+        grokBadge.style.background = '#fee2e2';
+        grokBadge.style.color = '#991b1b';
+      };
+      
+    } catch (err) {
+      grokLoading.style.display = 'none';
+      grokError.style.display = 'block';
+      grokError.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Lỗi Grok: ${err.message}`;
+      grokBadge.textContent = '❌ Tạo ảnh thất bại';
+      grokBadge.style.background = '#fee2e2';
+      grokBadge.style.color = '#991b1b';
+      throw err;
+    }
+  }
+
+  // Hàm vẽ canvas chính (cũ) - giữ nguyên
+  function drawCanvas(layout, roomL, roomW){
+    const canvas = document.getElementById('cvs');
+    const container = canvas.parentElement;
+    const maxWidth = Math.min(container.clientWidth, 520);
+    const size = maxWidth;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,size,size);
+    const pad = 32;
+    const s = Math.min((size - 2*pad)/roomL, (size - 2*pad)/roomW);
+    const ox = (size - roomL*s)/2;
+    const oy = (size - roomW*s)/2;
+    ctx.fillStyle = '#f9fafb';
+    ctx.fillRect(ox, oy, roomL*s, roomW*s);
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(ox, oy, roomL*s, roomW*s);
+    for(let p of layout.lamps){
+      let x = ox + p.x*s;
+      let y = oy + p.y*s;
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(x, y, LAMP_LEN*s, LAMP_WID*s);
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, LAMP_LEN*s, LAMP_WID*s);
+    }
+  }
+
+  // Hàm chính: xử lý toàn bộ quy trình AI 2 bước
+  async function processAIWithGeminiAndGrok(layout, roomL, roomW, lamp) {
+    if(isGeneratingAI) return;
+    isGeneratingAI = true;
+    
+    try {
+      // Reset UI
+      const geminiSection = document.getElementById('geminiSection');
+      const grokSection = document.getElementById('grokSection');
+      const geminiResult = document.getElementById('geminiResult');
+      const grokImage = document.getElementById('grokImageResult');
+      const geminiError = document.getElementById('geminiError');
+      const grokError = document.getElementById('grokError');
+      
+      if(geminiSection) geminiSection.style.display = 'none';
+      if(grokSection) grokSection.style.display = 'none';
+      if(geminiResult) geminiResult.style.display = 'none';
+      if(grokImage) grokImage.style.display = 'none';
+      if(geminiError) geminiError.style.display = 'none';
+      if(grokError) grokError.style.display = 'none';
+      
+      // Tạo ảnh sơ đồ base64
+      getLayoutImageAsBase64(layout, roomL, roomW, async (imageBase64) => {
+        try {
+          // Bước 1: Gemini phân tích sơ đồ
+          const description = await analyzeWithGemini(imageBase64, roomL, roomW, lamp, layout);
+          if (!description) throw new Error('Gemini không trả về mô tả');
+          
+          lastGeminiDescription = description;
+          
+          // Bước 2: Grok tạo ảnh từ mô tả
+          await generateWithGrok(description);
+          
+        } catch (err) {
+          console.error('AI process error:', err);
+          const grokErrorEl = document.getElementById('grokError');
+          if(grokErrorEl) {
+            grokErrorEl.style.display = 'block';
+            grokErrorEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Lỗi: ${err.message}. Vui lòng thử lại.`;
+          }
+        } finally {
+          isGeneratingAI = false;
         }
+      });
+      
+    } catch (err) {
+      console.error('AI process error:', err);
+      isGeneratingAI = false;
+    }
+  }
+
+  // Hàm tính toán và vẽ layout
+  function computeLayoutAndDraw(){
+    const hVal = parseFloat(document.getElementById('h').value);
+    const L = parseFloat(document.getElementById('l').value);
+    const W = parseFloat(document.getElementById('w').value);
+    const lampIdx = parseInt(document.getElementById('lightType').value,10)-1;
+    const lamp = LAMPS[lampIdx];
+    
+    if(!isFinite(hVal) || hVal<2 || hVal>10 || !isFinite(L) || !isFinite(W) || L<=0 || W<=0){
+      showResult();
+      document.getElementById('resultText').innerHTML = `<div class="stat-row"><span class="stat-label">⚠️ Lỗi</span><span class="stat-value">Chiều cao hoặc kích thước phòng không hợp lệ (cao 2-10m, L,W>0)</span></div>`;
+      return;
+    }
+    
+    const area = L*W;
+    const requiredLumens = area * TARGET_LUX * MF / UTIL;
+    const raw = Math.ceil(requiredLumens / lamp.lumen);
+    let N = ALLOWED_COUNTS.find(x=>x>=raw);
+    if(!N) N=20;
+    const layout = chooseExactGridLayout(N, L, W);
+    
+    if(!layout){
+      showResult();
+      document.getElementById('resultText').innerHTML = `<div class="stat-row"><span class="stat-label">⚠️ Không thể bố trí</span><span class="stat-value">Thử thay đổi kích thước phòng hoặc loại đèn</span></div>`;
+      return;
+    }
+    
+    const achievedLux = (N * lamp.lumen * UTIL) / (MF * area);
+    lastLayout = layout;
+    lastRoom = { l: L, w: W };
+    lastLamp = lamp;
+    
+    showResult();
+    drawCanvas(layout, L, W);
+    
+    // Reset AI sections trước khi chạy pipeline mới
+    const geminiSection = document.getElementById('geminiSection');
+    const grokSection = document.getElementById('grokSection');
+    if(geminiSection) geminiSection.style.display = 'none';
+    if(grokSection) grokSection.style.display = 'none';
+    
+    // Khởi chạy AI pipeline 2 bước
+    processAIWithGeminiAndGrok(layout, L, W, lamp);
+    
+    document.getElementById('resultText').innerHTML = `
+      <div class="stat-row"><span class="stat-label"><i class="fas fa-lightbulb"></i> Số lượng đèn tối ưu</span><span class="stat-value"><span class="badge-success">${N} đèn</span></span></div>
+      <div class="stat-row"><span class="stat-label">Loại đèn</span><span class="stat-value">${lamp.name}</span></div>
+      <div class="stat-row"><span class="stat-label">Độ rọi mục tiêu</span><span class="stat-value">${TARGET_LUX} lux</span></div>
+      <div class="stat-row"><span class="stat-label">Độ rọi ước tính đạt</span><span class="stat-value">${achievedLux.toFixed(0)} lux</span></div>
+      <div class="stat-row"><span class="stat-label">Khoảng cách ngang giữa đèn</span><span class="stat-value">${layout.spacingX.toFixed(2)} m</span></div>
+      <div class="stat-row"><span class="stat-label">Khoảng cách dọc giữa đèn</span><span class="stat-value">${layout.spacingY.toFixed(2)} m</span></div>
+      <div class="stat-row"><span class="stat-label">Ràng buộc</span><span class="stat-value">Cách tường ≥${WALL_GAP}m | Cách đèn ≥${MIN_GAP}m</span></div>
+    `;
+  }
+
+  // Event listeners
+  function initEventListeners(){
+    document.getElementById('gotoCalcBtn').onclick = () => showCalc();
+    document.getElementById('gotoInfoBtn').onclick = () => { showInfo(); updateInfoDetail(0); };
+    document.getElementById('gotoNoteBtn').onclick = () => showNote();
+    document.getElementById('backToMenuFromCalc').onclick = () => showMenu();
+    document.getElementById('startCalcBtn').onclick = () => computeLayoutAndDraw();
+    document.getElementById('backToCalcFromResult').onclick = () => showCalc();
+    document.getElementById('backToMainFromResult').onclick = () => showMenu();
+    document.getElementById('backToMenuFromInfo').onclick = () => showMenu();
+    document.getElementById('backToMenuFromNote').onclick = () => showMenu();
+    
+    document.getElementById('retryAIBtn').onclick = () => {
+      if(lastLayout && lastRoom.l && lastLamp && !isGeneratingAI) {
+        // Reset UI
+        const geminiSection = document.getElementById('geminiSection');
+        const grokSection = document.getElementById('grokSection');
+        if(geminiSection) geminiSection.style.display = 'none';
+        if(grokSection) grokSection.style.display = 'none';
+        processAIWithGeminiAndGrok(lastLayout, lastRoom.l, lastRoom.w, lastLamp);
+      } else if(!lastLamp) {
+        alert('Vui lòng tính toán thiết kế trước khi tạo ảnh AI.');
+      } else if(isGeneratingAI) {
+        alert('AI đang xử lý, vui lòng đợi...');
       }
-
-      // Extra safety: ensure last lamp fits
-      const maxLampX = marginX + (cols-1)*(LAMP_LEN + spacingX) + LAMP_LEN;
-      const maxLampY = marginY + (rows-1)*(LAMP_WID + spacingY) + LAMP_WID;
-      if (maxLampX > roomL + 1e-9) return null;
-      if (maxLampY > roomW + 1e-9) return null;
-
-      return {
-        spacingX,
-        spacingY,
-        startX: marginX,
-        startY: marginY,
-        lamps
+    };
+    
+    document.querySelectorAll('.info-lamp-btn').forEach(btn => {
+      btn.onclick = () => updateInfoDetail(parseInt(btn.dataset.idx));
+    });
+    document.getElementById('navInfo').onclick = (e) => { e.preventDefault(); showInfo(); updateInfoDetail(0); };
+    document.getElementById('navNote').onclick = (e) => { e.preventDefault(); showNote(); };
+    
+    const logo = document.getElementById('logoReload');
+    if(logo) {
+      logo.onclick = (e) => {
+        e.preventDefault();
+        window.location.reload();
       };
     }
-
-    function setupCanvas(){
-      const cvs = document.getElementById('cvs');
-      const maxW = Math.min(window.innerWidth - 36, 560 - 36);
-      const cssW = Math.max(280, Math.min(500, maxW));
-      const cssH = Math.floor(cssW * 1.02);
-
-      cvs.style.width = cssW + 'px';
-      cvs.style.height = cssH + 'px';
-
-      const dpr = window.devicePixelRatio || 1;
-      cvs.width = Math.floor(cssW * dpr);
-      cvs.height = Math.floor(cssH * dpr);
-
-      const ctx = cvs.getContext('2d');
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      return {ctx, w: cssW, h: cssH};
+  }
+  
+  function updateInfoDetail(idx){
+    const lamp = LAMPS[idx];
+    document.getElementById('infoDetailBox').innerHTML = `
+      <strong><i class="fas fa-microchip"></i> ${lamp.name}</strong><br><br>
+      ${lamp.note}<br>
+      <span class="badge-success" style="margin-top:8px; display:inline-block;">Quang thông: ${lamp.lumen} lm | Công suất: ${lamp.powerW}W</span>
+    `;
+  }
+  
+  window.addEventListener('resize', () => {
+    if(lastLayout && document.getElementById('resultView').style.display === 'block'){
+      drawCanvas(lastLayout, lastRoom.l, lastRoom.w);
     }
+  });
+  
+  initEventListeners();
+  showMenu();
 
-    function clearCanvas(){
-      const {ctx,w,h} = setupCanvas();
-      ctx.clearRect(0,0,w,h);
-    }
-
-    function drawLayout(layout, roomL, roomW){
-      const {ctx,w,h} = setupCanvas();
-      ctx.clearRect(0,0,w,h);
-
-      // Balanced padding (keeps drawing centered in frame)
-      const pad = Math.max(26, Math.min(40, w * 0.075));
-      const s = Math.min((w - 2*pad)/roomL, (h - 2*pad)/roomW);
-      const ox = (w - roomL*s)/2;
-      const oy = (h - roomW*s)/2;
-
-      // room area
-      ctx.fillStyle = '#f6f7fb';
-      ctx.fillRect(ox, oy, roomL*s, roomW*s);
-
-      // subtle border for clarity
-      ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(ox, oy, roomL*s, roomW*s);
-
-      const lampPxW = LAMP_LEN * s;
-      const lampPxH = LAMP_WID * s;
-
-      for (const p of layout.lamps){
-        let x = ox + p.x*s;
-        let y = oy + p.y*s;
-
-        // clamp to room (should already be inside)
-        x = Math.min(Math.max(x, ox), ox + roomL*s - lampPxW);
-        y = Math.min(Math.max(y, oy), oy + roomW*s - lampPxH);
-
-        ctx.fillStyle = '#ffcc00';
-        ctx.fillRect(x, y, lampPxW, lampPxH);
-
-        ctx.strokeStyle = 'rgba(0,0,0,0.14)';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x, y, lampPxW, lampPxH);
-      }
-    }
-
-    window.addEventListener('resize', ()=>{
-      if (document.getElementById('result').style.display === 'block' && lastDraw){
-        drawLayout(lastDraw.layout, lastDraw.roomL, lastDraw.roomW);
-      }
-    });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rise').forEach(el => observer.observe(el));
 </script>
-
-
-</body></html>
+</body>
+</html>
