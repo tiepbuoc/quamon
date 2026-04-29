@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+<!-- saved from url=(0091)file:///C:/Users/ADMIN/AndroidStudioProjects/LightingOffline/app/src/main/assets/index.html -->
+<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiết kế chiếu sáng phòng (Offline)</title>
+    <style>
+        :root{
+          --bg1:#f5f7ff;
+          --bg2:#f6fff8;
+          --card:#ffffff;
+          --text:#121212;
+          --muted:#5e6472;
+          --primary:#0b6efd;
+          --primary2:#2b8cff;
+          --success:#16a34a;
+          --success2:#22c55e;
+          --line:#e6e8ef;
+          --shadow: 0 10px 30px rgba(20, 30, 60, 0.10);
+        }
+        *{box-sizing:border-box}
+        body{
+          margin:0;
+          font-family:"Times New Roman", Times, serif;
+          background: radial-gradient(1200px 600px at 10% 10%, var(--bg1), transparent 70%),
+                      radial-gradient(1200px 600px at 90% 20%, var(--bg2), transparent 70%),
+                      #f7f7fb;
+          color:var(--text);
+        }
+        .wrap{
+          max-width:560px;
+          margin:0 auto;
+          padding:18px;
+          min-height:100vh;
+        }
+        .menu,.screen{display:none}
+        h1,h2{margin:8px 0 12px}
+        h1{font-size:34px; letter-spacing:0.2px}
+        h2{font-size:28px; letter-spacing:0.1px}
+        .card{
+          background:var(--card);
+          border:1px solid var(--line);
+          border-radius:16px;
+          padding:16px;
+          box-shadow: var(--shadow);
+        }
+
+        /* MENU CENTER */
+        #menu{
+          min-height: calc(100vh - 36px);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+
+        .hero{
+          border-radius:14px;
+          padding:14px 14px;
+          background: linear-gradient(135deg, rgba(11,110,253,0.12), rgba(34,197,94,0.10));
+          border:1px solid rgba(11,110,253,0.12);
+          margin-bottom:12px;
+        }
+        .hero .sub{
+          color:var(--muted);
+          font-size:14px;
+          line-height:1.35;
+          margin-top:6px;
+        }
+
+        .btn{
+          width:100%;
+          padding:13px 14px;
+          font-size:17px;
+          border:none;
+          border-radius:12px;
+          cursor:pointer;
+          color:#fff;
+          margin:10px 0 0;
+          font-family:"Times New Roman", Times, serif;
+          box-shadow: 0 8px 18px rgba(11,110,253,0.18);
+          background: linear-gradient(135deg, var(--primary), var(--primary2));
+          transition: transform .05s ease, filter .15s ease;
+        }
+        .btn:hover{filter:brightness(0.98)}
+        .btn:active{transform: translateY(1px)}
+        .btn.back{
+          box-shadow: 0 8px 18px rgba(34,197,94,0.16);
+          background: linear-gradient(135deg, var(--success), var(--success2));
+        }
+
+        label{display:block;margin:12px 0 6px;font-weight:700}
+        input,select{
+          width:100%;
+          padding:11px 12px;
+          font-size:16px;
+          border:1px solid var(--line);
+          border-radius:12px;
+          outline:none;
+          background:#fff;
+          font-family:"Times New Roman", Times, serif;
+        }
+        .muted{
+          color:var(--muted);
+          font-size:13.5px;
+          line-height:1.4;
+        }
+        .divider{height:1px;background:var(--line);margin:14px 0}
+        .canvasWrap{
+          background:#fff;
+          border:1px solid var(--line);
+          border-radius:16px;
+          padding:10px;
+        }
+        canvas{
+          width:100%;
+          height:auto;
+          display:block;
+          border-radius:14px;
+          background:#fbfbff;
+        }
+        .result{
+          margin-top:12px;
+          padding:12px 14px;
+          background:#fff;
+          border:1px solid var(--line);
+          border-radius:16px;
+          font-size:16px;
+          line-height:1.35;
+        }
+        .kv{margin-top:6px;font-size:14.5px;color:#222}
+        .kv b{font-weight:800}
+        .err{color:#b00020;font-weight:800}
+        .ok{color:#0a7a2f;font-weight:800}
+
+        .screen .card{margin: 10px auto 24px}
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <!-- MENU -->
+    <div class="menu" id="menu" style="display: flex;">
+        <div class="card" style="width:100%; max-width:520px;">
+            <div class="hero">
+                <h1 style="margin:0;">Menu</h1>
+                <div class="sub">Chạy offline. Vẽ minh hoạ bằng canvas.</div>
+            </div>
+
+            <button class="btn" onclick="goTo(&#39;calc&#39;)">Tính toán</button>
+            <button class="btn" onclick="goTo(&#39;info&#39;)">Thông tin</button>
+            <button class="btn" onclick="goTo(&#39;note&#39;)">Ghi chú</button>
+
+            <div class="divider"></div>
+            <div class="muted">
+                Điều kiện vẽ: khoảng cách giữa đèn ≥ <b>0,3m</b>, cách tường ≥ <b>0,2m</b>.<br>
+                Số lượng đèn chỉ có thể là: <b>1, 2, 4, 6, 9, 12, 14, 20</b>.<br>
+                Giới hạn chiều cao: <b>2 → 10m</b>.
+            </div>
+        </div>
+    </div>
+
+    <!-- CALC -->
+    <div class="screen" id="calc" style="display: none;">
+        <div class="card">
+            <h2>Tính toán</h2>
+
+            <label for="lightType">Chọn loại đèn</label>
+            <select id="lightType">
+                <option value="1">Bóng LED Tuýp DE HO 1.2m 22W T8 Philips</option>
+                <option value="2">Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W</option>
+                <option value="3">Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips</option>
+            </select>
+
+            <label for="h">Chiều cao (m)</label>
+            <input id="h" type="number" step="0.01" placeholder="Ví dụ: 2.8">
+
+            <label for="l">Chiều dài (m)</label>
+            <input id="l" type="number" step="0.01" placeholder="Ví dụ: 6">
+
+            <label for="w">Chiều rộng (m)</label>
+            <input id="w" type="number" step="0.01" placeholder="Ví dụ: 4.5">
+
+            <button class="btn" onclick="startCalc()">Bắt đầu</button>
+
+            <div class="divider"></div>
+            <div class="muted">
+                Độ rọi mục tiêu: <b>300 lux</b>. (Ước tính theo quang thông, hệ số sử dụng và suy giảm.)
+            </div>
+
+            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="screen" id="result" style="display: none;">
+        <div class="card">
+            <h2>Minh hoạ Bố trí Đèn</h2>
+
+            <div class="canvasWrap">
+                <canvas id="cvs" width="500" height="510" style="width: 500px; height: 510px;"></canvas>
+            </div>
+
+            <div class="result" id="resultText">
+        <div><span class="ok">Số lượng đèn cần thiết:</span> <b>4</b></div>
+        <div class="kv"><b>Đèn:</b> Bóng LED Tuýp DE HO 1.2m 22W T8 Philips</div>
+        <div class="kv"><b>Độ rọi mục tiêu:</b> 300 lux</div>
+        <div class="kv"><b>Ước tính độ rọi đạt:</b> 307 lux</div>
+        <div class="kv"><b>Khoảng cách ngang m (giữa đèn):</b> 0.48 m</div>
+        <div class="kv"><b>Khoảng cách dọc n (giữa đèn):</b> 0.60 m</div>
+        <div class="kv"><b>Cách tường:</b> ≥ 0.2 m | <b>Cách nhau:</b> ≥ 0.3 m</div>
+      </div>
+
+            <button class="btn back" style="margin-top:14px;" onclick="goTo(&#39;calc&#39;)">Trở lại tính toán</button>
+        </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="screen" id="info" style="display: none;">
+        <div class="card">
+            <h2>Thông tin</h2>
+
+            <button class="btn" onclick="showInfo(1)">1) LED Tuýp Philips 22W</button>
+            <button class="btn" onclick="showInfo(2)">2) LED Tuýp Rạng Đông 20W</button>
+            <button class="btn" onclick="showInfo(3)">3) LED Tuýp Philips 14.5W</button>
+
+            <div class="divider"></div>
+            <div id="infoBox" class="muted"><b>Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips</b><br><br>Công suất: ~14.5W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~1600lm<br><br>
+              Ưu điểm: Ánh sáng chất lượng từ thương hiệu Philips, ít nhấp nháy, bảo vệ mắt<br><br>
+              Ứng dụng: Góc học, phòng học nhỏ, phòng làm việc cá nhân</div>
+
+            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
+        </div>
+    </div>
+
+    <!-- NOTE -->
+    <div class="screen" id="note" style="display: none;">
+        <div class="card">
+            <h2>Ghi chú</h2>
+            <p style="margin:0;font-size:20px;">ạduiagh</p>
+
+            <button class="btn back" style="margin-top:14px;" onclick="backToMenu()">Trở về menu</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ===== Navigation =====
+    function hideAll(){
+      document.querySelectorAll('.screen').forEach(s => s.style.display='none');
+      document.getElementById('menu').style.display='none';
+    }
+    function goTo(id){
+      hideAll();
+      document.getElementById(id).style.display='block';
+      if(id === 'result' && lastDraw){
+        drawLayout(lastDraw.layout, lastDraw.roomL, lastDraw.roomW);
+      }
+    }
+    function backToMenu(){
+      hideAll();
+      document.getElementById('menu').style.display='flex';
+    }
+    document.addEventListener('DOMContentLoaded', ()=> backToMenu());
+
+    // ===== Lamp info =====
+    const LAMPS = [
+      {
+        name:"Bóng LED Tuýp DE HO 1.2m 22W T8 Philips",
+        powerW:22,
+        lumen:2300,
+        lengthM:1.2,
+        note:`Công suất: ~22W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~2300lm<br><br>
+              Ưu điểm: Giá rẻ, hiệu quả tốt, dễ thay thế cho bóng huỳnh quang cũ<br><br>
+              Ứng dụng: Phòng học, phòng làm việc, không gian chung`
+      },
+      {
+        name:"Bộ đèn LED Tuýp T8 Thủy tinh Rạng Đông 1.2m M11 20W",
+        powerW:20,
+        lumen:2400,
+        lengthM:1.2,
+        note:`Công suất: ~20W<br><br>Chiều dài: 1.2m<br><br>Quang thông (Lumen): ~2400lm (tùy mode/loại có thể ~2200–2600lm)<br><br>
+              Ưu điểm: Thương hiệu Rạng Đông uy tín, ánh sáng ổn định và tuổi thọ cao<br><br>
+              Ứng dụng: Lớp học, phòng học tại nhà, khu vực sinh hoạt chung`
+      },
+      {
+        name:"Đèn LED Tuýp T8 14.5W ESSENTIAL 1200mm Philips",
+        powerW:14.5,
+        lumen:1600,
+        lengthM:1.2,
+        note:`Công suất: ~14.5W<br><br>Chiều dài: ~1.2m<br><br>Quang thông (Lumen): ~1600lm<br><br>
+              Ưu điểm: Ánh sáng chất lượng từ thương hiệu Philips, ít nhấp nháy, bảo vệ mắt<br><br>
+              Ứng dụng: Góc học, phòng học nhỏ, phòng làm việc cá nhân`
+      }
+    ];
+    function showInfo(i){
+      const lamp = LAMPS[i-1];
+      document.getElementById('infoBox').innerHTML =
+        `<b>${lamp.name}</b><br><br>${lamp.note}`;
+    }
+
+    // ===== Calculation + Drawing =====
+    const TARGET_LUX = 300;
+    const UTIL = 0.8;
+    const MF = 1.2;
+
+    // Lamp size (m)
+    const LAMP_LEN = 1.2;
+    const LAMP_WID = 0.1;
+
+    // Constraints (m)
+    const MIN_GAP = 0.3;   // between lamps
+    const WALL_GAP = 0.2;  // from walls
+
+    // Dynamic targets based on room size (for "đẹp và hợp lý")
+    const MARGIN_FRAC = 0.10; // aim ~10% margin if possible
+    const GAP_FRAC = 0.12;    // aim ~12% gap if possible
+    const GAP_CAP = 1.20;     // cap to avoid huge spacing
+
+    const ALLOWED_COUNTS = [1,2,4,6,9,12,14,20];
+
+    let lastDraw = null;
+
+    function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
+    function startCalc(){
+      const h = parseFloat(document.getElementById('h').value);
+      const L = parseFloat(document.getElementById('l').value);
+      const W = parseFloat(document.getElementById('w').value);
+      const lampIdx = parseInt(document.getElementById('lightType').value,10)-1;
+      const lamp = LAMPS[lampIdx];
+
+      if (!isFinite(h) || h < 2 || h > 10){
+        goTo('result');
+        document.getElementById('resultText').innerHTML = `<span class="err">lỗi chiều cao</span>`;
+        lastDraw = null;
+        clearCanvas();
+        return;
+      }
+
+      if (!isFinite(L) || !isFinite(W) || L <= 0 || W <= 0){
+        goTo('result');
+        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
+        lastDraw = null;
+        clearCanvas();
+        return;
+      }
+
+      const area = L * W;
+      if (area < 1){
+        goTo('result');
+        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
+        lastDraw = null;
+        clearCanvas();
+        return;
+      }
+
+      const requiredLumens = area * TARGET_LUX * MF / UTIL;
+      const raw = Math.ceil(requiredLumens / lamp.lumen);
+
+      if (raw > 20){
+        goTo('result');
+        document.getElementById('resultText').innerHTML = `<span class="err">Cần đổi qua đèn phù hợp hơn</span>`;
+        lastDraw = null;
+        clearCanvas();
+        return;
+      }
+
+      let N = ALLOWED_COUNTS.find(x => x >= raw);
+      if (!N) N = 20;
+
+      const layout = chooseExactGridLayout(N, L, W);
+      if (!layout){
+        goTo('result');
+        document.getElementById('resultText').innerHTML = `<span class="err">phòng không phù hợp</span>`;
+        lastDraw = null;
+        clearCanvas();
+        return;
+      }
+
+      const achievedLux = (N * lamp.lumen * UTIL) / (MF * area);
+
+      lastDraw = { layout, roomL: L, roomW: W };
+      goTo('result');
+      drawLayout(layout, L, W);
+
+      const m = layout.spacingX;
+      const n = layout.spacingY;
+
+      document.getElementById('resultText').innerHTML = `
+        <div><span class="ok">Số lượng đèn cần thiết:</span> <b>${N}</b></div>
+        <div class="kv"><b>Đèn:</b> ${lamp.name}</div>
+        <div class="kv"><b>Độ rọi mục tiêu:</b> ${TARGET_LUX} lux</div>
+        <div class="kv"><b>Ước tính độ rọi đạt:</b> ${achievedLux.toFixed(0)} lux</div>
+        <div class="kv"><b>Khoảng cách ngang m (giữa đèn):</b> ${m.toFixed(2)} m</div>
+        <div class="kv"><b>Khoảng cách dọc n (giữa đèn):</b> ${n.toFixed(2)} m</div>
+        <div class="kv"><b>Cách tường:</b> ≥ ${WALL_GAP.toFixed(1)} m | <b>Cách nhau:</b> ≥ ${MIN_GAP.toFixed(1)} m</div>
+      `;
+    }
+
+    function chooseExactGridLayout(N, roomL, roomW){
+      const pairs = [];
+      for (let r=1; r<=N; r++){
+        if (N % r === 0) pairs.push([r, N/r]);
+      }
+
+      let best = null;
+      for (const [rows, cols] of pairs){
+        const cand = evaluateGrid(rows, cols, roomL, roomW);
+        if (!cand) continue;
+
+        // scoring: prefer square-ish + aligned with room aspect + close to target gaps
+        const aspect = roomL / roomW;
+        const gridAspect = cols / rows;
+        const squareness = Math.abs(rows - cols);
+        const aspectPenalty = Math.abs(gridAspect - aspect);
+
+        const tgx = targetGap(roomL), tgy = targetGap(roomW);
+        const gapPenalty = Math.abs(cand.spacingX - tgx) + Math.abs(cand.spacingY - tgy);
+
+        const score = squareness * 3 + aspectPenalty * 2 + gapPenalty * 1.2;
+
+        if (!best || score < best.score){
+          best = {...cand, rows, cols, score};
+        }
+      }
+      return best;
+    }
+
+    function targetMargin(dim){
+      return clamp(dim * MARGIN_FRAC, WALL_GAP, Math.max(WALL_GAP, dim * 0.22));
+    }
+    function targetGap(dim){
+      return clamp(dim * GAP_FRAC, MIN_GAP, GAP_CAP);
+    }
+
+    function evaluateGrid(rows, cols, roomL, roomW){
+      // Target margins
+      let marginX = targetMargin(roomL);
+      let marginY = targetMargin(roomW);
+
+      let spacingX = 0, spacingY = 0;
+
+      // ----- X direction (length) -----
+      if (cols > 1){
+        spacingX = (roomL - 2*marginX - cols*LAMP_LEN) / (cols - 1);
+
+        // If too small: lock spacing at MIN_GAP and reduce margins equally
+        if (spacingX < MIN_GAP){
+          spacingX = MIN_GAP;
+          marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
+        } else {
+          // If too large: bring it toward targetGap and increase margins (center) for nicer look
+          const maxX = (roomL - 2*WALL_GAP - cols*LAMP_LEN) / (cols - 1);
+          if (maxX < MIN_GAP - 1e-9) return null;
+
+          const desiredX = clamp(targetGap(roomL), MIN_GAP, maxX);
+          spacingX = Math.min(spacingX, desiredX);
+          marginX = (roomL - cols*LAMP_LEN - (cols-1)*spacingX) / 2;
+        }
+      } else {
+        marginX = (roomL - LAMP_LEN) / 2;
+        spacingX = 0;
+      }
+
+      // ----- Y direction (width) -----
+      if (rows > 1){
+        spacingY = (roomW - 2*marginY - rows*LAMP_WID) / (rows - 1);
+
+        if (spacingY < MIN_GAP){
+          spacingY = MIN_GAP;
+          marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
+        } else {
+          const maxY = (roomW - 2*WALL_GAP - rows*LAMP_WID) / (rows - 1);
+          if (maxY < MIN_GAP - 1e-9) return null;
+
+          const desiredY = clamp(targetGap(roomW), MIN_GAP, maxY);
+          spacingY = Math.min(spacingY, desiredY);
+          marginY = (roomW - rows*LAMP_WID - (rows-1)*spacingY) / 2;
+        }
+      } else {
+        marginY = (roomW - LAMP_WID) / 2;
+        spacingY = 0;
+      }
+
+      // Respect wall gap
+      if (marginX < WALL_GAP - 1e-9) return null;
+      if (marginY < WALL_GAP - 1e-9) return null;
+
+      // Build lamps
+      const lamps = [];
+      for (let r=0;r<rows;r++){
+        for (let c=0;c<cols;c++){
+          lamps.push({
+            x: marginX + c*(LAMP_LEN + spacingX),
+            y: marginY + r*(LAMP_WID + spacingY)
+          });
+        }
+      }
+
+      // Extra safety: ensure last lamp fits
+      const maxLampX = marginX + (cols-1)*(LAMP_LEN + spacingX) + LAMP_LEN;
+      const maxLampY = marginY + (rows-1)*(LAMP_WID + spacingY) + LAMP_WID;
+      if (maxLampX > roomL + 1e-9) return null;
+      if (maxLampY > roomW + 1e-9) return null;
+
+      return {
+        spacingX,
+        spacingY,
+        startX: marginX,
+        startY: marginY,
+        lamps
+      };
+    }
+
+    function setupCanvas(){
+      const cvs = document.getElementById('cvs');
+      const maxW = Math.min(window.innerWidth - 36, 560 - 36);
+      const cssW = Math.max(280, Math.min(500, maxW));
+      const cssH = Math.floor(cssW * 1.02);
+
+      cvs.style.width = cssW + 'px';
+      cvs.style.height = cssH + 'px';
+
+      const dpr = window.devicePixelRatio || 1;
+      cvs.width = Math.floor(cssW * dpr);
+      cvs.height = Math.floor(cssH * dpr);
+
+      const ctx = cvs.getContext('2d');
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      return {ctx, w: cssW, h: cssH};
+    }
+
+    function clearCanvas(){
+      const {ctx,w,h} = setupCanvas();
+      ctx.clearRect(0,0,w,h);
+    }
+
+    function drawLayout(layout, roomL, roomW){
+      const {ctx,w,h} = setupCanvas();
+      ctx.clearRect(0,0,w,h);
+
+      // Balanced padding (keeps drawing centered in frame)
+      const pad = Math.max(26, Math.min(40, w * 0.075));
+      const s = Math.min((w - 2*pad)/roomL, (h - 2*pad)/roomW);
+      const ox = (w - roomL*s)/2;
+      const oy = (h - roomW*s)/2;
+
+      // room area
+      ctx.fillStyle = '#f6f7fb';
+      ctx.fillRect(ox, oy, roomL*s, roomW*s);
+
+      // subtle border for clarity
+      ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(ox, oy, roomL*s, roomW*s);
+
+      const lampPxW = LAMP_LEN * s;
+      const lampPxH = LAMP_WID * s;
+
+      for (const p of layout.lamps){
+        let x = ox + p.x*s;
+        let y = oy + p.y*s;
+
+        // clamp to room (should already be inside)
+        x = Math.min(Math.max(x, ox), ox + roomL*s - lampPxW);
+        y = Math.min(Math.max(y, oy), oy + roomW*s - lampPxH);
+
+        ctx.fillStyle = '#ffcc00';
+        ctx.fillRect(x, y, lampPxW, lampPxH);
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.14)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, lampPxW, lampPxH);
+      }
+    }
+
+    window.addEventListener('resize', ()=>{
+      if (document.getElementById('result').style.display === 'block' && lastDraw){
+        drawLayout(lastDraw.layout, lastDraw.roomL, lastDraw.roomW);
+      }
+    });
+</script>
+
+
+</body></html>
